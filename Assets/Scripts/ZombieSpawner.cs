@@ -7,25 +7,32 @@ public class ZombieSpawner : MonoBehaviour
 {
     private static Zombie _zombiePrefabRef;
     private static IMoveBehaviour _moveBehaviour, _meleeBehaviour;
-    private static int _zombieSpeedRef;
+    private static float _zombieSpeedRef;
+    private static Vector3 _spawnPositionDelta;
 
     [SerializeField]
-    Zombie _zombiePrefab;
+    private Zombie _zombiePrefab;
     [SerializeField]
-    int _zombieSpeed;
+    private float _zombieSpeed;
 
     private void Awake()
     {
+        _spawnPositionDelta = new Vector3(UnityEngine.Random.Range(-1, 1f), 0, UnityEngine.Random.Range(-1f, 1f));
         _zombiePrefabRef = _zombiePrefab;
         _zombieSpeedRef = _zombieSpeed;
-        _moveBehaviour = new ZombieMoveBehaviour();
-        _meleeBehaviour = new ZombieMeleeBehaviour();
     }
 
     internal static void Spawn(Lane lane)
     {
-        Zombie zombie = Instantiate(_zombiePrefabRef, lane.zombieParent);
+        Zombie zombie = Instantiate(_zombiePrefabRef, lane.ZombieParent);
+        zombie.transform.localRotation = Quaternion.Euler(0, -90, 0);
+        zombie.transform.position += zombie.transform.forward * UnityEngine.Random.Range(-1f, 1f) + zombie.transform.right * UnityEngine.Random.Range(-1f, 1f);
+
+        _moveBehaviour = new ZombieMoveBehaviour(zombie);
+        _meleeBehaviour = new ZombieMeleeBehaviour(zombie);
         zombie.Init(lane.ZombieHP, _zombieSpeedRef, lane.RewardPerZombie, _moveBehaviour, _meleeBehaviour);
+
+        lane.AddZombie(zombie);
     }
 
     internal static void Free(Zombie zombie)

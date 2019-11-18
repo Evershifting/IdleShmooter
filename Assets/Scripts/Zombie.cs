@@ -5,12 +5,16 @@ using UnityEngine;
 
 public class Zombie : MonoBehaviour
 {
-    private int health, moveSpeed, reward;
+    private float health, moveSpeed, reward;
     private Animator _animator;
     private IMoveBehaviour _behaviour, _moveBehaviour, _meleeBehaviour;
-    private bool isDead = false;
+    private bool _isDead = false;
 
-    public void Init(int health, int moveSpeed, int reward, IMoveBehaviour moveBehaviour, IMoveBehaviour meleeBehaviour)
+    public float Health { get => health; }
+    public float MoveSpeed { get => moveSpeed; }
+    public float Reward { get => reward; }
+
+    public void Init(float health, float moveSpeed, float reward, IMoveBehaviour moveBehaviour, IMoveBehaviour meleeBehaviour)
     {
         this.health = health;
         this.moveSpeed = moveSpeed;
@@ -19,31 +23,40 @@ public class Zombie : MonoBehaviour
         this._meleeBehaviour = meleeBehaviour;
     }
 
+    private void OnEnable()
+    {
+        if (!_animator)
+            _animator = GetComponent<Animator>();
+        //_animator.runtimeAnimatorController.
+        _isDead = false;
+        _animator.SetBool("Dead", false);
+    }
     private void Start()
     {
         _behaviour = _moveBehaviour;
     }
     private void Update()
     {
-        if (!isDead)
+        if (!_isDead)
             _behaviour.Move();
     }
 
-    public void ReceiveDamage(int value)
+    public void ReceiveDamage(float value)
     {
         health -= value;
         if (health <= 0)
-            Die();
+           Die();
     }
 
     private void Die()
     {
-        isDead = true;
-        _animator.SetBool("isDead", true);
+        _isDead = true;
+        _animator.SetBool("Dead", true);
     }
 
-    public void OnDied()
+    private void OnDied()
     {
+        EventsManager.Broadcast(EventsType.ZombieDied, this);
         ZombieSpawner.Free(this);
     }
 
