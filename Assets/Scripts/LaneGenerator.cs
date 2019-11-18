@@ -4,15 +4,9 @@ using UnityEngine;
 
 public class LaneGenerator : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField]
+    Lane _lanePrefab;
+    [SerializeField]
+    int _lanaAmount = 20;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

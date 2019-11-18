@@ -1,18 +1,21 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField]
+    private Text _money;
+    private static Text _moneyRef;
+    private void Start()
     {
-        
+        _moneyRef = _money;
     }
-
-    // Update is called once per frame
-    void Update()
+    public static void UpdateMoney(float value)
     {
-        
+        if (_moneyRef)
+            _moneyRef.text = value.ToString();
     }
 }

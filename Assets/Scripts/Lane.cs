@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class Lane : MonoBehaviour
 {
@@ -12,7 +13,9 @@ public class Lane : MonoBehaviour
     [SerializeField]
     private int _zombieAmount = 4;
     [SerializeField]
-    private Transform _zombieParent, _cop;
+    private Transform _zombieParent;
+    [SerializeField]
+    private Animator _cop;
     [SerializeField]
     private float rewardPerZombie, damagePerShot, zombieHP;
     [SerializeField]
@@ -22,7 +25,6 @@ public class Lane : MonoBehaviour
     public float DamagePerShot { get => damagePerShot; }
     public float ZombieHP { get => zombieHP; }
     public Transform ZombieParent { get => _zombieParent; }
-    public Transform Cop { get => _cop; }
 
     private void OnEnable() => EventsManager.AddListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
     private void OnDisable() => EventsManager.RemoveListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
@@ -38,7 +40,7 @@ public class Lane : MonoBehaviour
 
     private void Start()
     {
-        _currentShotDelay = 0f;
+        _currentShotDelay = Random.Range(-1.5f, _shotDelay);
         _zombieSpawnDelayWait = new WaitForSeconds(_zombieSpawnDelay);
         StartCoroutine(InitialZombieSpawn());
     }
@@ -69,7 +71,7 @@ public class Lane : MonoBehaviour
 
     private void Shoot()
     {
-        Debug.Log("Pew-pew");
+        _cop.SetTrigger("Shoot");
         if (_zombies.Count > 0)
             _zombies[0].ReceiveDamage(DamagePerShot);
     }

@@ -27,7 +27,6 @@ public class Zombie : MonoBehaviour
     {
         if (!_animator)
             _animator = GetComponent<Animator>();
-        //_animator.runtimeAnimatorController.
         _isDead = false;
         _animator.SetBool("Dead", false);
     }
@@ -52,11 +51,11 @@ public class Zombie : MonoBehaviour
     {
         _isDead = true;
         _animator.SetBool("Dead", true);
+        EventsManager.Broadcast(EventsType.ZombieDied, this);
     }
 
     private void OnDied()
     {
-        EventsManager.Broadcast(EventsType.ZombieDied, this);
         ZombieSpawner.Free(this);
     }
 
@@ -68,6 +67,7 @@ public class Zombie : MonoBehaviour
 
     private void ChangeBehaviour()
     {
+        _animator.SetTrigger("Melee");
         _behaviour = _meleeBehaviour;
     }
 }

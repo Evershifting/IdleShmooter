@@ -9,6 +9,7 @@ public class ZombieSpawner : MonoBehaviour
     private static IMoveBehaviour _moveBehaviour, _meleeBehaviour;
     private static float _zombieSpeedRef;
     private static Vector3 _spawnPositionDelta;
+    private static Stack<Zombie> _spawnableZombies = new Stack<Zombie>();
 
     [SerializeField]
     private Zombie _zombiePrefab;
@@ -24,9 +25,17 @@ public class ZombieSpawner : MonoBehaviour
 
     internal static void Spawn(Lane lane)
     {
-        Zombie zombie = Instantiate(_zombiePrefabRef, lane.ZombieParent);
+        Zombie zombie;
+        if (_spawnableZombies.Count > 0)
+        {
+            zombie = _spawnableZombies.Pop();
+            zombie.gameObject.SetActive(true);
+        }
+        else
+            zombie = Instantiate(_zombiePrefabRef, lane.ZombieParent);
         zombie.transform.localRotation = Quaternion.Euler(0, -90, 0);
-        zombie.transform.position += zombie.transform.forward * UnityEngine.Random.Range(-1f, 1f) + zombie.transform.right * UnityEngine.Random.Range(-1f, 1f);
+        zombie.transform.position = lane.ZombieParent.position 
+            + zombie.transform.forward * UnityEngine.Random.Range(-1f, 1f) + zombie.transform.right * UnityEngine.Random.Range(-1f, 1f);
 
         _moveBehaviour = new ZombieMoveBehaviour(zombie);
         _meleeBehaviour = new ZombieMeleeBehaviour(zombie);
@@ -37,7 +46,7 @@ public class ZombieSpawner : MonoBehaviour
 
     internal static void Free(Zombie zombie)
     {
-        //throw new NotImplementedException();
-        Destroy(zombie.gameObject);
+        _spawnableZombies.Push(zombie);
+        zombie.gameObject.SetActive(false);
     }
 }
