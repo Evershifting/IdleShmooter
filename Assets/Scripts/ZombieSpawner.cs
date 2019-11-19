@@ -19,13 +19,11 @@ public class ZombieSpawner : MonoBehaviour
 
     private void Awake()
     {
-        _spawnPositionDelta = new Vector3(UnityEngine.Random.Range(-1, 1f), 0, UnityEngine.Random.Range(-1f, 1f));
-        _zombiePrefabRef = _zombiePrefab;
-        _zombieSpeedRef = _zombieSpeed;
-
         if (!_settings)
             _settings = Resources.Load<Settings>("Settings");
-        _zombieSpeed = _settings.ZombieSpeed;
+        _spawnPositionDelta = new Vector3(UnityEngine.Random.Range(-1, 1f), 0, UnityEngine.Random.Range(-1f, 1f));
+        _zombiePrefabRef = _zombiePrefab;
+        _zombieSpeedRef =  _settings.ZombieSpeed;
     }
 
     internal static void Spawn(Lane lane)
