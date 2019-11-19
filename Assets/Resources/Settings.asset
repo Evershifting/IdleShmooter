@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8bdbd3c5b3c9864f88ef23c9f1a08d3, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  _lanesAmount: 20
+  _lanesAmount: 1
   _zombieSpeed: 5
   _laneSpacing: 2.5
-  _zombiesAmount: 4
+  _zombiesAmount: 2
   _zombiesHP: 5
   _zombiesReward: 5
   _zombiesSpawnDelay: 0.3
