@@ -4,5 +4,7 @@ using UnityEngine;
 
 public enum EventsType
 {
-    ZombieDied
+    ZombieDied,
+    CopShot,
+    CopClicked
 }

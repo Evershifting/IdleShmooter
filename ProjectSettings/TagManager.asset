@@ -4,7 +4,8 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - MeleeZone
+  - Lane
+  - Cop
   layers:
   - Default
   - TransparentFX

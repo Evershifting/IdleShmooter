@@ -61,7 +61,7 @@ public class Zombie : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "MeleeZone")
+        if (other.tag == "Cop")
             ChangeBehaviour();
     }
 

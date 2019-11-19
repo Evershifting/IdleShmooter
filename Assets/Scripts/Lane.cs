@@ -15,7 +15,7 @@ public class Lane : MonoBehaviour
     [SerializeField]
     private Transform _zombieParent;
     [SerializeField]
-    private Animator _cop;
+    private Cop _cop;
     [SerializeField]
     private float rewardPerZombie, damagePerShot, zombieHP;
     [SerializeField]
@@ -26,8 +26,20 @@ public class Lane : MonoBehaviour
     public float ZombieHP { get => zombieHP; }
     public Transform ZombieParent { get => _zombieParent; }
 
-    private void OnEnable() => EventsManager.AddListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
-    private void OnDisable() => EventsManager.RemoveListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
+    private void OnEnable()
+    {
+        EventsManager.AddListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
+        EventsManager.AddListener<Cop>(EventsType.CopShot, OnCopShot);
+        EventsManager.AddListener<Cop>(EventsType.CopClicked, OnCopClicked);
+    }
+
+
+    private void OnDisable()
+    {
+        EventsManager.RemoveListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
+        EventsManager.RemoveListener<Cop>(EventsType.CopShot, OnCopShot);
+        EventsManager.RemoveListener<Cop>(EventsType.CopClicked, OnCopClicked);
+    }
 
     private void OnZombieDied(Zombie zombie)
     {
@@ -68,11 +80,28 @@ public class Lane : MonoBehaviour
             Shoot();
         }
     }
-
-    private void Shoot()
+    public void OnMouseDown()
     {
-        _cop.SetTrigger("Shoot");
-        if (_zombies.Count > 0)
+        _cop.Shoot();
+    }
+    public void Shoot()
+    {
+        _cop.Shoot();
+    }
+
+    private void OnCopClicked(Cop cop)
+    {
+        if (cop == _cop)
+            UIManager.UpgradeLane(UpgradeLane);
+    }
+
+    private void UpgradeLane()
+    {
+        Debug.Log($"{name} Upgraded");
+    }
+    private void OnCopShot(Cop cop)
+    {
+        if (cop == _cop && _zombies.Count > 0)
             _zombies[0].ReceiveDamage(DamagePerShot);
     }
 

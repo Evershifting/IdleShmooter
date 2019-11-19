@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Z_death_A
+  m_Name: Z_death
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
@@ -40293,7 +40293,8 @@ AnimationClip:
   - time: 1.8333334
     functionName: OnDied
     data: 
-    objectReferenceParameter: {fileID: 0}
+    objectReferenceParameter: {fileID: 193626217530056561, guid: bfde34caed4b9104d9109ea3abc4cdf1,
+      type: 3}
     floatParameter: 0
     intParameter: 0
     messageOptions: 0

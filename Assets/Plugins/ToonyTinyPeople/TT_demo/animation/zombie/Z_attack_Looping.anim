@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Z_attack_Looped
+  m_Name: Z_attack_Looping
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
