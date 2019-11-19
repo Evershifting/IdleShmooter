@@ -8,28 +8,41 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    [SerializeField]
-    private Text _money;
-    [SerializeField]
-    private GameObject _upgradePopup, _settingspopup;
 
-    private static GameObject _upgradePopupRef, _settingspopupRef;
+    private static SettingsPopup _settingspopupRef;
+    private static UpgradePopup _upgradePopupRef;
     private static Text _moneyRef;
     private static bool isCameraMoving = false;
     private static Action LaneUpgrade;
+
+    [SerializeField]
+    private Text _money;
+    [SerializeField]
+    private UpgradePopup _upgradePopup;
+    [SerializeField]
+    private SettingsPopup _settingsPopup;
+
+
+    private Settings _settings;
+
+    private void Awake()
+    {
+        if (!_settings)
+            _settings = Resources.Load<Settings>("Settings");
+    }
     private void Start()
     {
         _moneyRef = _money;
         _upgradePopupRef = _upgradePopup;
-        _settingspopupRef = _settingspopup;
+        _settingspopupRef = _settingsPopup;
     }
     public static void UpdateMoney(float value)
     {
         if (_moneyRef)
-            _moneyRef.text = value.ToString();
+            _moneyRef.text = $"$: {((int)value).ToString()}";
     }
 
-   
+
     private void Update()
     {
         if (EventSystem.current.currentSelectedGameObject == null)
@@ -74,36 +87,38 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    public static void UpgradeLane(Action upgradeLane)
+    public static void UpgradeLane(Lane lane, Action upgradeLane)
     {
         LaneUpgrade = upgradeLane;
-        _upgradePopupRef.SetActive(true);
+        _upgradePopupRef.Init(lane);
     }
 
     public static void UpgradeLane()
     {
-        _upgradePopupRef.SetActive(false);
         LaneUpgrade?.Invoke();
     }
     public void SwitchLane(bool up)
     {
         if (!isCameraMoving)
-            if (!up)
+            if (up)
             {
-                if (Camera.main.transform.position.z > 0)
+                if (Camera.main.transform.position.z < _settings.LaneSpacing * _settings.LanesAmount)
                 {
                     isCameraMoving = true;
-                    Tween t = Camera.main.transform.DOMove(Camera.main.transform.position - Vector3.forward * 2.5f, 0.2f);
+                    Tween t = Camera.main.transform.DOMove(Camera.main.transform.position + Vector3.forward * _settings.LaneSpacing, 0.2f);
                     t.onComplete += () => isCameraMoving = false;
                     t.Play();
                 }
             }
             else
             {
-                isCameraMoving = true;
-                Tween t = Camera.main.transform.DOMove(Camera.main.transform.position + Vector3.forward * 2.5f, 0.2f);
-                t.onComplete += () => isCameraMoving = false;
-                t.Play();
+                if (Camera.main.transform.position.z > 0)
+                {
+                    isCameraMoving = true;
+                    Tween t = Camera.main.transform.DOMove(Camera.main.transform.position - Vector3.forward * _settings.LaneSpacing, 0.2f);
+                    t.onComplete += () => isCameraMoving = false;
+                    t.Play();
+                }
             }
     }
 }

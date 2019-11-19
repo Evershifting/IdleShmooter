@@ -1,0 +1,34 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8bdbd3c5b3c9864f88ef23c9f1a08d3, type: 3}
+  m_Name: Settings
+  m_EditorClassIdentifier: 
+  _lanesAmount: 1
+  _zombieSpeed: 0
+  _laneSpacing: 2.5
+  _zombiesAmount: 4
+  _zombiesHP: 5
+  _zombiesReward: 5
+  _zombiesSpawnDelay: 0.3
+  _copDamage: 5
+  _copAttackDelay: 0.6
+  _upgradeCost: 100
+  _zombiesHPGrowthLane: 1.2
+  _zombiesRewardGrowthLane: 1.2
+  _copDamageGrowthLane: 1.2
+  _copAttackDelayGrowthLane: 1
+  _upgradeCostGrowthLane: 1.2
+  _zombiesHPGrowthLevel: 1.2
+  _zombiesRewardGrowthLevel: 1.2
+  _copDamageGrowthLevel: 1.2
+  _copAttackDelayGrowthLevel: 0.95
+  _upgradeCostGrowthLevel: 1.2

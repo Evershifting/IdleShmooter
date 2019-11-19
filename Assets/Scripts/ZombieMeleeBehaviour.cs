@@ -1,4 +1,5 @@
-﻿internal class ZombieMeleeBehaviour : IMoveBehaviour
+﻿
+internal class ZombieMeleeBehaviour : IMoveBehaviour
 {
     Zombie _zombie;
 

@@ -29,6 +29,8 @@ public class Zombie : MonoBehaviour
             _animator = GetComponent<Animator>();
         _isDead = false;
         _animator.SetBool("Dead", false);
+        _animator.SetBool("Melee", false);
+        _behaviour = _moveBehaviour;
     }
     private void Start()
     {
@@ -54,6 +56,8 @@ public class Zombie : MonoBehaviour
         EventsManager.Broadcast(EventsType.ZombieDied, this);
     }
 
+
+    //This method is called by AnimationEvent
     private void OnDied()
     {
         ZombieSpawner.Free(this);
@@ -67,7 +71,7 @@ public class Zombie : MonoBehaviour
 
     private void ChangeBehaviour()
     {
-        _animator.SetTrigger("Melee");
+        _animator.SetBool("Melee", true);
         _behaviour = _meleeBehaviour;
     }
 }

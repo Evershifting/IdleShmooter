@@ -319,14 +319,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8937eff2f9a5df748a7b83a1306961b6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _zombies: []
   _zombieAmount: 4
+  _rewardPerZombie: 10
+  _copDamage: 5
+  _zombieHP: 5
+  _zombieSpawnDelay: 0.3
+  _copAttackDelay: 0.1
+  _upgradeCost: 100
   _zombieParent: {fileID: 2793603947960092383}
   _cop: {fileID: 3845204016412043729}
-  rewardPerZombie: 50
-  damagePerShot: 5
-  zombieHP: 5
-  _zombieSpawnDelay: 0.3
-  _shotDelay: 0.6
 --- !u!1 &2793603947960092382
 GameObject:
   m_ObjectHideFlags: 0
