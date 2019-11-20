@@ -40,7 +40,7 @@ public class ZombieSpawner : MonoBehaviour
         zombie.transform.position = lane.ZombieParent.position 
             + zombie.transform.forward * UnityEngine.Random.Range(-1f, 1f) + zombie.transform.right * UnityEngine.Random.Range(-1f, 1f);
 
-        _moveBehaviour = new ZombieMoveBehaviour(zombie, zombie.transform);
+        _moveBehaviour = new ZombieMoveBehaviour(zombie);
         _meleeBehaviour = new ZombieMeleeBehaviour(zombie);
         zombie.Init(lane.ZombieHP, _zombieSpeedRef, lane.RewardPerZombie, _moveBehaviour, _meleeBehaviour);
 

@@ -12,6 +12,7 @@ public class Zombie : MonoBehaviour, IZombie
 
     public float MoveSpeed { get; private set; }
     public float Reward { get; private set; }
+    public GameObject GameObject { get => gameObject; }
 
     public void Init(float health, float moveSpeed, float reward, IMoveBehaviour moveBehaviour, IMoveBehaviour meleeBehaviour)
     {

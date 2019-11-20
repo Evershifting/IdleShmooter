@@ -1,4 +1,4 @@
-﻿public interface IZombie
+﻿public interface IZombie : IMonoBehaviour
 {
     float MoveSpeed { get; }
     float Reward { get; }

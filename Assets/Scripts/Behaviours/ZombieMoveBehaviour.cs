@@ -5,10 +5,10 @@ internal class ZombieMoveBehaviour : IMoveBehaviour
     private IZombie _zombie;
     Transform _transform;
 
-    public ZombieMoveBehaviour(IZombie zombie, Transform transform)
+    public ZombieMoveBehaviour(IZombie zombie)
     {
         _zombie = zombie;
-        _transform = transform;
+        _transform = zombie.GameObject.transform;
     }
 
     public void Move()
