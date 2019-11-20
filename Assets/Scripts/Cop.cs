@@ -3,15 +3,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Cop : MonoBehaviour
+public class Cop : MonoBehaviour, ICop
 {
-    public Animator Animator { get; private set; }
+    private Animator Animator { get; set; }
     private void Awake()
     {
         if (!Animator)
             Animator = GetComponent<Animator>();
     }
-    
+
     public void Shoot()
     {
         Animator.SetTrigger("Shoot");

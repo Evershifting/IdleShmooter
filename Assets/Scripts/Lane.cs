@@ -4,9 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
-public class Lane : MonoBehaviour
+public class Lane : MonoBehaviour, ILane
 {
-    public List<Zombie> _zombies = new List<Zombie>();
+    public List<IZombie> _zombies = new List<IZombie>();
     private WaitForSeconds _zombieSpawnDelayWait;
     private float _currentShotDelay;
     private Settings _settings;
@@ -27,8 +27,9 @@ public class Lane : MonoBehaviour
     [SerializeField]
     private Cop _cop;
 
-    public void Init(int zombieAmount, float rewardPerZombie, float damagePerShot, float zombieHP, float zombieSpawnDelay, float shotDelay, float upgradeCost)
+    public void Init(string name, int zombieAmount, float rewardPerZombie, float damagePerShot, float zombieHP, float zombieSpawnDelay, float shotDelay, float upgradeCost)
     {
+        this.name = name;
         _zombieAmount = zombieAmount;
         _rewardPerZombie = rewardPerZombie;
         _copDamage = damagePerShot;
@@ -46,19 +47,19 @@ public class Lane : MonoBehaviour
 
     private void OnEnable()
     {
-        EventsManager.AddListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
-        EventsManager.AddListener<Cop>(EventsType.CopShot, OnCopShot);
-        EventsManager.AddListener<Cop>(EventsType.CopClicked, OnCopClicked);
+        EventsManager.AddListener<IZombie>(EventsType.ZombieDied, OnZombieDied);
+        EventsManager.AddListener<ICop>(EventsType.CopShot, OnCopShot);
+        EventsManager.AddListener<ICop>(EventsType.CopClicked, OnCopClicked);
     }
 
     private void OnDisable()
     {
-        EventsManager.RemoveListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
-        EventsManager.RemoveListener<Cop>(EventsType.CopShot, OnCopShot);
-        EventsManager.RemoveListener<Cop>(EventsType.CopClicked, OnCopClicked);
+        EventsManager.RemoveListener<IZombie>(EventsType.ZombieDied, OnZombieDied);
+        EventsManager.RemoveListener<ICop>(EventsType.CopShot, OnCopShot);
+        EventsManager.RemoveListener<ICop>(EventsType.CopClicked, OnCopClicked);
     }
 
-    private void OnZombieDied(Zombie zombie)
+    private void OnZombieDied(IZombie zombie)
     {
         if (_zombies.Contains(zombie))
         {
@@ -102,18 +103,19 @@ public class Lane : MonoBehaviour
             Shoot();
         }
     }
-    public void OnMouseDown()
+
+    public void LaneClicked()
     {
-        _cop.Shoot();
+        Shoot();
     }
-    public void Shoot()
+    private void Shoot()
     {
         _cop.Shoot();
     }
 
-    private void OnCopClicked(Cop cop)
+    private void OnCopClicked(ICop cop)
     {
-        if (cop == _cop)
+        if (cop as UnityEngine.Object == _cop)
             UIManager.UpgradeLane(this, UpgradeLane);
     }
 
@@ -127,13 +129,13 @@ public class Lane : MonoBehaviour
         _copAttackDelay *= _settings.CopAttackDelayGrowthLevel;
         _upgradeCost *= _settings.UpgradeCostGrowthLevel;
     }
-    private void OnCopShot(Cop cop)
+    private void OnCopShot(ICop cop)
     {
-        if (cop == _cop && _zombies.Count > 0)
+        if (cop as UnityEngine.Object == _cop && _zombies.Count > 0)
             _zombies[0].ReceiveDamage(DamagePerShot);
     }
 
-    public void AddZombie(Zombie zombie)
+    public void AddZombie(IZombie zombie)
     {
         if (!_zombies.Contains(zombie))
             _zombies.Add(zombie);

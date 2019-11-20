@@ -72,22 +72,22 @@ public class UIManager : MonoBehaviour
     {
         if (hit.collider.tag == "Lane")
         {
-            if (hit.collider.gameObject.transform.parent.GetComponentInParent<Lane>())
+            if (hit.collider.gameObject.transform.parent.GetComponentInParent<ILane>() != null)
             {
-                hit.collider.gameObject.transform.parent.GetComponentInParent<Lane>().Shoot();
+                hit.collider.gameObject.transform.parent.GetComponentInParent<ILane>().LaneClicked();
             }
         }
 
         if (hit.collider.tag == "Cop")
         {
-            if (hit.collider.GetComponent<Cop>())
+            if (hit.collider.GetComponent<ICop>() != null)
             {
-                hit.collider.GetComponent<Cop>().CopClicked();
+                hit.collider.GetComponent<ICop>().CopClicked();
             }
         }
     }
 
-    public static void UpgradeLane(Lane lane, Action upgradeLane)
+    public static void UpgradeLane(ILane lane, Action upgradeLane)
     {
         LaneUpgrade = upgradeLane;
         _upgradePopupRef.Init(lane);

@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEngine.UI;
 internal class UpgradePopup : MonoBehaviour
 {
-    private Lane _currentLane;
+    private ILane _currentLane;
     private bool _isUpgradeAvailable = false;
     [SerializeField]
     private Text _upgradeCost, _upgradeText;
@@ -21,7 +21,7 @@ internal class UpgradePopup : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    internal void Init(Lane lane)
+    internal void Init(ILane lane)
     {
         gameObject.SetActive(true);
         _currentLane = lane;

@@ -1,9 +1,9 @@
 ﻿
 internal class ZombieMeleeBehaviour : IMoveBehaviour
 {
-    Zombie _zombie;
+    IZombie _zombie;
 
-    public ZombieMeleeBehaviour(Zombie zombie)
+    public ZombieMeleeBehaviour(IZombie zombie)
     {
         _zombie = zombie;
     }

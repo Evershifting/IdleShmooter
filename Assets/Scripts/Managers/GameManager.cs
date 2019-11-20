@@ -4,10 +4,10 @@ internal class GameManager : MonoBehaviour
 {
     public static float Money { get; private set; } = 0f;
 
-    private void OnEnable() => EventsManager.AddListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
-    private void OnDisable() => EventsManager.RemoveListener<Zombie>(EventsType.ZombieDied, OnZombieDied);
+    private void OnEnable() => EventsManager.AddListener<IZombie>(EventsType.ZombieDied, OnZombieDied);
+    private void OnDisable() => EventsManager.RemoveListener<IZombie>(EventsType.ZombieDied, OnZombieDied);
 
-    private void OnZombieDied(Zombie zombie)
+    private void OnZombieDied(IZombie zombie)
     {
         ChangeMoneyAmount(zombie.Reward);
     }

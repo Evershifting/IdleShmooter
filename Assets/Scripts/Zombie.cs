@@ -3,24 +3,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Zombie : MonoBehaviour
+public class Zombie : MonoBehaviour, IZombie
 {
-    private float health, moveSpeed, reward;
+    private float _health;
     private Animator _animator;
     private IMoveBehaviour _behaviour, _moveBehaviour, _meleeBehaviour;
     private bool _isDead = false;
 
-    public float Health { get => health; }
-    public float MoveSpeed { get => moveSpeed; }
-    public float Reward { get => reward; }
+    public float MoveSpeed { get; private set; }
+    public float Reward { get; private set; }
 
     public void Init(float health, float moveSpeed, float reward, IMoveBehaviour moveBehaviour, IMoveBehaviour meleeBehaviour)
     {
-        this.health = health;
-        this.moveSpeed = moveSpeed;
-        this.reward = reward;
-        this._moveBehaviour = moveBehaviour;
-        this._meleeBehaviour = meleeBehaviour;
+        _health = health;
+        MoveSpeed = moveSpeed;
+        Reward = reward;
+        _moveBehaviour = moveBehaviour;
+        _meleeBehaviour = meleeBehaviour;
     }
 
     private void OnEnable()
@@ -44,8 +43,8 @@ public class Zombie : MonoBehaviour
 
     public void ReceiveDamage(float value)
     {
-        health -= value;
-        if (health <= 0)
+        _health -= value;
+        if (_health <= 0)
            Die();
     }
 
