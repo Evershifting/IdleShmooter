@@ -15,7 +15,7 @@ public class ZombieSpawner : MonoBehaviour
     private Zombie _zombiePrefab;
 
     private float _zombieSpeed;
-    private Settings _settings;
+    private static Settings _settings;
 
     private void Awake()
     {
@@ -38,7 +38,8 @@ public class ZombieSpawner : MonoBehaviour
             zombie = Instantiate(_zombiePrefabRef, lane.ZombieParent);
         zombie.transform.localRotation = Quaternion.Euler(0, -90, 0);
         zombie.transform.position = lane.ZombieParent.position 
-            + zombie.transform.forward * UnityEngine.Random.Range(-1f, 1f) + zombie.transform.right * UnityEngine.Random.Range(-1f, 1f);
+            + zombie.transform.forward * UnityEngine.Random.Range(_settings.ZombieSpawnDisplaycement.x,-_settings.ZombieSpawnDisplaycement.x) 
+            + zombie.transform.right * UnityEngine.Random.Range(_settings.ZombieSpawnDisplaycement.y, -_settings.ZombieSpawnDisplaycement.y);
 
         _moveBehaviour = new ZombieMoveBehaviour(zombie);
         _meleeBehaviour = new ZombieMeleeBehaviour(zombie);

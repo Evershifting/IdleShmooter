@@ -21,7 +21,7 @@ public class LaneGenerator : MonoBehaviour
     {
         for (int i = 0; i < _laneAmount; i++)
         {
-            ILane lane = Instantiate(_lanePrefab, transform.position + Vector3.forward * _settings.LaneSpacing * i, Quaternion.identity, transform);
+            ILane lane = Instantiate(_lanePrefab, transform.position + Vector3.up * _settings.LaneSpacing * i, Quaternion.identity, transform);
             lane.Init(
                 $"Lane {(i + 1).ToString()}",
                 _settings.ZombiesAmount,

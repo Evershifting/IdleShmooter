@@ -12,6 +12,8 @@ public class Settings : ScriptableObject
     private float _zombieSpeed;
     [SerializeField]
     private float _laneSpacing = 2.5f;
+    [SerializeField]
+    private Vector2 _zombieSpawnDisplaycement;
 
     [Header("Lane Stats")]
     [Header("Base Stats")]
@@ -37,6 +39,7 @@ public class Settings : ScriptableObject
     public int LanesAmount { get => _lanesAmount; }
     public float ZombieSpeed { get => _zombieSpeed; }
     public float LaneSpacing { get => _laneSpacing; }
+    public Vector2 ZombieSpawnDisplaycement { get => _zombieSpawnDisplaycement; }
 
     //Base Stats
     public int ZombiesAmount { get => _zombiesAmount; }
@@ -60,4 +63,5 @@ public class Settings : ScriptableObject
     public float CopDamageGrowthLevel { get => _copDamageGrowthLevel; }
     public float CopAttackDelayGrowthLevel { get => _copAttackDelayGrowthLevel; }
     public float UpgradeCostGrowthLevel { get => _upgradeCostGrowthLevel; }
+
 }

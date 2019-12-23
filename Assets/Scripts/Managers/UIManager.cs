@@ -102,20 +102,20 @@ public class UIManager : MonoBehaviour
         if (!isCameraMoving)
             if (up)
             {
-                if (Camera.main.transform.position.z < _startingCameraPosition.z + _settings.LaneSpacing * _settings.LanesAmount)
+                if (Camera.main.transform.position.y < _startingCameraPosition.y + _settings.LaneSpacing * _settings.LanesAmount)
                 {
                     isCameraMoving = true;
-                    Tween t = Camera.main.transform.DOMove(Camera.main.transform.position + Vector3.forward * _settings.LaneSpacing, 0.2f);
+                    Tween t = Camera.main.transform.DOMove(Camera.main.transform.position + Vector3.up * _settings.LaneSpacing, 0.2f);
                     t.onComplete += () => isCameraMoving = false;
                     t.Play();
                 }
             }
             else
             {
-                if (Camera.main.transform.position.z > _startingCameraPosition.z)
+                if (Camera.main.transform.position.y > _startingCameraPosition.y)
                 {
                     isCameraMoving = true;
-                    Tween t = Camera.main.transform.DOMove(Camera.main.transform.position - Vector3.forward * _settings.LaneSpacing, 0.2f);
+                    Tween t = Camera.main.transform.DOMove(Camera.main.transform.position - Vector3.up * _settings.LaneSpacing, 0.2f);
                     t.onComplete += () => isCameraMoving = false;
                     t.Play();
                 }
