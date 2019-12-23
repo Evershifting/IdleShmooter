@@ -15,7 +15,7 @@ MonoBehaviour:
   _lanesAmount: 5
   _zombieSpeed: 2
   _laneSpacing: 3.1
-  _zombieSpawnDisplaycement: {x: 0, y: 0}
+  _zombieSpawnDisplaycement: {x: 2.5, y: 2.5}
   _zombiesAmount: 5
   _zombiesHP: 10
   _zombiesReward: 5

@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Random = UnityEngine.Random;
 
 public class ZombieSpawner : MonoBehaviour
 {
@@ -23,7 +24,7 @@ public class ZombieSpawner : MonoBehaviour
             _settings = Resources.Load<Settings>("Settings");
         _spawnPositionDelta = new Vector3(UnityEngine.Random.Range(-1, 1f), 0, UnityEngine.Random.Range(-1f, 1f));
         _zombiePrefabRef = _zombiePrefab;
-        _zombieSpeedRef =  _settings.ZombieSpeed;
+        _zombieSpeedRef = _settings.ZombieSpeed;
     }
 
     internal static void Spawn(ILane lane)
@@ -37,13 +38,36 @@ public class ZombieSpawner : MonoBehaviour
         else
             zombie = Instantiate(_zombiePrefabRef, lane.ZombieParent);
         zombie.transform.localRotation = Quaternion.Euler(0, -90, 0);
-        zombie.transform.position = lane.ZombieParent.position 
-            + zombie.transform.forward * UnityEngine.Random.Range(_settings.ZombieSpawnDisplaycement.x,-_settings.ZombieSpawnDisplaycement.x) 
+        zombie.transform.position = lane.ZombieParent.position
+            + zombie.transform.forward * UnityEngine.Random.Range(_settings.ZombieSpawnDisplaycement.x, -_settings.ZombieSpawnDisplaycement.x)
             + zombie.transform.right * UnityEngine.Random.Range(_settings.ZombieSpawnDisplaycement.y, -_settings.ZombieSpawnDisplaycement.y);
 
         _moveBehaviour = new ZombieMoveBehaviour(zombie);
         _meleeBehaviour = new ZombieMeleeBehaviour(zombie);
         zombie.Init(lane.ZombieHP, _zombieSpeedRef, lane.RewardPerZombie, _moveBehaviour, _meleeBehaviour);
+
+        lane.AddZombie(zombie);
+    }
+    internal static void Spawn(ILane lane, float radius, GameObject target)
+    {
+        Zombie zombie;
+        if (_spawnableZombies.Count > 0)
+        {
+            zombie = _spawnableZombies.Pop() as Zombie;
+            zombie.gameObject.SetActive(true);
+        }
+        else
+            zombie = Instantiate(_zombiePrefabRef, lane.ZombieParent);
+        zombie.transform.localRotation = Quaternion.Euler(0, -90, 0);
+
+
+        Vector2 spawnPosition = Random.insideUnitCircle.normalized * radius;
+        zombie.transform.localPosition = lane.ZombieParent.position + new Vector3(spawnPosition.x, 0, spawnPosition.y);
+
+        _moveBehaviour = new ZombieMoveToTargetBehaviour(zombie, target.transform);
+        _meleeBehaviour = new ZombieMeleeBehaviour(zombie);
+        zombie.Init(lane.ZombieHP, _zombieSpeedRef, lane.RewardPerZombie, _moveBehaviour, _meleeBehaviour);
+        zombie.transform.LookAt(target.transform);
 
         lane.AddZombie(zombie);
     }
