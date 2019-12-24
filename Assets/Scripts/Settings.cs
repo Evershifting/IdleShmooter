@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu]
+[CreateAssetMenu(menuName = "Settings/LaneAndZombies", fileName = "LaneAndZombies", order = 0)]
 public class Settings : ScriptableObject
 {
     [Header("Global Stats")]

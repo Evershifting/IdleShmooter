@@ -2,12 +2,14 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    public static UIManager Instance;
 
     private static SettingsPopup _settingspopupRef;
     private static UpgradePopup _upgradePopupRef;
@@ -18,6 +20,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _money;
     [SerializeField]
+    private TextMeshProUGUI _doubleDamageDuration, _doubleIncomeDuration;
+    [SerializeField]
     private UpgradePopup _upgradePopup;
     [SerializeField]
     private SettingsPopup _settingsPopup;
@@ -26,6 +30,14 @@ public class UIManager : MonoBehaviour
 
     private void Awake()
     {
+        if (Instance == null)
+            Instance = this;
+        else
+        {
+            Debug.LogWarning("Destroyed additional UIManager");
+            Destroy(gameObject);
+        }
+
         if (!_settings)
             _settings = Resources.Load<Settings>("Settings");
         _startingCameraPosition = Camera.main.transform.position;
@@ -35,6 +47,8 @@ public class UIManager : MonoBehaviour
         _moneyRef = _money;
         _upgradePopupRef = _upgradePopup;
         _settingspopupRef = _settingsPopup;
+        SetDoubleDamageTimer(0);
+        SetDoubleIncomeTimer(0);
     }
     public static void UpdateMoney(float value)
     {
@@ -92,7 +106,6 @@ public class UIManager : MonoBehaviour
         LaneUpgrade = upgradeLane;
         _upgradePopupRef.Init(lane);
     }
-
     public static void UpgradeLane()
     {
         LaneUpgrade?.Invoke();
@@ -120,5 +133,17 @@ public class UIManager : MonoBehaviour
                     t.Play();
                 }
             }
+    }
+    public void SetDoubleDamageTimer(float value)
+    {
+        _doubleDamageDuration.gameObject.SetActive(value > 0);
+        TimeSpan t = TimeSpan.FromSeconds(value);
+        _doubleDamageDuration.text = t.ToString(@"mm\:ss");
+    }
+    public void SetDoubleIncomeTimer(float value)
+    {
+        _doubleIncomeDuration.gameObject.SetActive(value > 0);
+        TimeSpan t = TimeSpan.FromSeconds(value);
+        _doubleIncomeDuration.text = t.ToString(@"mm\:ss");
     }
 }

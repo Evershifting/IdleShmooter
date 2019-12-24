@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8bdbd3c5b3c9864f88ef23c9f1a08d3, type: 3}
   m_Name: Settings
   m_EditorClassIdentifier: 
-  _lanesAmount: 5
+  _lanesAmount: 10
   _zombieSpeed: 2
   _laneSpacing: 3.1
   _zombieSpawnDisplaycement: {x: 2.5, y: 2.5}

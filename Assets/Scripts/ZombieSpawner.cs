@@ -57,7 +57,9 @@ public class ZombieSpawner : MonoBehaviour
             zombie.gameObject.SetActive(true);
         }
         else
+        {
             zombie = Instantiate(_zombiePrefabRef, lane.ZombieParent);
+        }
         zombie.transform.localRotation = Quaternion.Euler(0, -90, 0);
 
 
@@ -74,7 +76,18 @@ public class ZombieSpawner : MonoBehaviour
 
     internal static void Free(Zombie zombie)
     {
-        _spawnableZombies.Push(zombie);
+        if (!_spawnableZombies.Contains(zombie))
+            _spawnableZombies.Push(zombie);
+        
         zombie.gameObject.SetActive(false);
+    }
+
+    public static void ClearZombies()
+    {
+        foreach (IZombie item in _spawnableZombies)
+        {
+            Destroy(item.GameObject);
+        }
+        _spawnableZombies.Clear();
     }
 }

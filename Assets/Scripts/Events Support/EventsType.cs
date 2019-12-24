@@ -6,5 +6,9 @@ public enum EventsType
 {
     ZombieDied,
     CopShot,
-    CopClicked
+    CopClicked,
+    DoubleDamage,
+    DoubleIncome,
+    InstantMoney,
+    BossKilled
 }

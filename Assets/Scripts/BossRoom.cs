@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
@@ -13,7 +14,9 @@ public class BossRoom : MonoBehaviour, ILane
     public float _initialZombieSpawnDelay = 0.15f, _zombieSpawnDelay = 0.33f, _copAttackDelay = 1f;
     public GameObject _copSpawner, _zombieSpawner;
     public Cop _copPrefab;
-
+    public int ZombiesToKill = 100;
+    public int ZombiesLeftToKill;
+    public TextMeshProUGUI ZOmbieCounter;
 
     public List<Cop> _cops = new List<Cop>();
     private float _currentShotDelay, _currentZombieSpawnDelay;
@@ -33,6 +36,10 @@ public class BossRoom : MonoBehaviour, ILane
     {
         EventsManager.AddListener<IZombie>(EventsType.ZombieDied, OnZombieDied);
         EventsManager.AddListener<ICop>(EventsType.CopShot, OnCopShot);
+        ZOmbieCounter.gameObject.SetActive(true);
+        ZombiesLeftToKill = ZombiesToKill;
+        UpdateZombiesNumber(ZombiesLeftToKill);
+        InitBossRoom();
     }
 
 
@@ -40,12 +47,38 @@ public class BossRoom : MonoBehaviour, ILane
     {
         EventsManager.RemoveListener<IZombie>(EventsType.ZombieDied, OnZombieDied);
         EventsManager.RemoveListener<ICop>(EventsType.CopShot, OnCopShot);
+        ZOmbieCounter.gameObject.SetActive(false);
+        StopAllCoroutines();
+        Clean();
+    }
+
+    private void Clean()
+    {
+        foreach (Cop cop in _cops)
+        {
+            Destroy(cop.gameObject);
+        }
+        _cops.Clear();
+
+
+        foreach (Transform zombie in _zombieSpawner.transform)
+        {
+            Destroy(zombie.gameObject);
+        }
+        _zombies.Clear();
+        ZombieSpawner.ClearZombies();
     }
 
 
     // Start is called before the first frame update
     private void Start()
     {
+    }
+
+    private void InitBossRoom()
+    {
+        _currentShotDelay = Random.Range(-1.5f, _copAttackDelay);
+        _zombieSpawnDelayWait = new WaitForSeconds(_initialZombieSpawnDelay);
         for (int i = 0; i < _copsAmount; i++)
         {
             GameObject cop = Instantiate(_copPrefab.gameObject, _copSpawner.transform);
@@ -53,23 +86,21 @@ public class BossRoom : MonoBehaviour, ILane
             cop.transform.localPosition = new Vector3(copPosition.x, 0, copPosition.y);
             _cops.Add(cop.GetComponent<Cop>());
         }
-        _currentShotDelay = Random.Range(-1.5f, _copAttackDelay);
-        _zombieSpawnDelayWait = new WaitForSeconds(_initialZombieSpawnDelay);
         StartCoroutine(InitialZombieSpawn());
     }
-
     private IEnumerator InitialZombieSpawn()
     {
+        Debug.Log("InitialZombieSpawn");
         for (int i = 0; i < _initialZombiesAmount; i++)
         {
-            yield return _zombieSpawnDelayWait;
             SpawnZombie();
+            yield return _zombieSpawnDelayWait;
         }
     }
 
     private void SpawnZombie()
     {
-        ZombieSpawner.Spawn(this, _zombieSpawnRadius, _cops[Random.Range(0, _cops.Count - 1)].gameObject);
+        ZombieSpawner.Spawn(this, _zombieSpawnRadius, _zombieSpawner);
     }
 
 
@@ -115,6 +146,12 @@ public class BossRoom : MonoBehaviour, ILane
     }
     private void OnZombieDied(IZombie zombie)
     {
+        ZombiesLeftToKill--;
+        UpdateZombiesNumber(ZombiesLeftToKill);
+        if (ZombiesLeftToKill <= 0)
+        {
+            EventsManager.Broadcast(EventsType.BossKilled);
+        }
         _zombies.Remove(zombie);
     }
 
@@ -132,5 +169,12 @@ public class BossRoom : MonoBehaviour, ILane
     public void LaneClicked()
     {
         StartCoroutine(AllCopsShootRoutine());
+    }
+
+
+
+    private void UpdateZombiesNumber(int zombiesLeftToKill)
+    {
+        ZOmbieCounter.text = $"Kill {zombiesLeftToKill.ToString()} \nzombies to finish event";
     }
 }

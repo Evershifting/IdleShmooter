@@ -32,6 +32,10 @@ public class Zombie : MonoBehaviour, IZombie
         _animator.SetBool("Melee", false);
         _behaviour = _moveBehaviour;
     }
+    private void OnDisable()
+    {
+        ZombieSpawner.Free(this);
+    }
     private void Start()
     {
         _behaviour = _moveBehaviour;
@@ -46,7 +50,7 @@ public class Zombie : MonoBehaviour, IZombie
     {
         _health -= value;
         if (_health <= 0)
-           Die();
+            Die();
     }
 
     private void Die()
