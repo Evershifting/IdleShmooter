@@ -4,6 +4,7 @@ using Random = UnityEngine.Random;
 
 internal class GameManager : MonoBehaviour
 {
+    public static bool isBossFight = false;
     public static float Money { get; private set; } = 0f;
     public static float PassiveIncome
     {
@@ -58,10 +59,11 @@ internal class GameManager : MonoBehaviour
 
     public void BossFight()
     {
-        CameraGameField.SetActive(!GameField.activeInHierarchy);
-        GameField.SetActive(!GameField.activeInHierarchy);
-        CameraBoss.SetActive(!BossRoom.activeInHierarchy);
-        BossRoom.SetActive(!BossRoom.activeInHierarchy);
+        isBossFight = !isBossFight;
+        CameraGameField.SetActive(!isBossFight);
+        GameField.SetActive(!isBossFight);
+        CameraBoss.SetActive(isBossFight);
+        BossRoom.SetActive(isBossFight);
     }
 
     private void OnInstantMoney()

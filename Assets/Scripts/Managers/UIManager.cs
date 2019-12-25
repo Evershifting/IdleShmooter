@@ -18,6 +18,8 @@ public class UIManager : MonoBehaviour
     private static Action LaneUpgrade;
 
     [SerializeField]
+    private float _cameraSpeed = 0.3f;
+    [SerializeField]
     private Text _money;
     [SerializeField]
     private TextMeshProUGUI _doubleDamageDuration, _doubleIncomeDuration;
@@ -54,11 +56,33 @@ public class UIManager : MonoBehaviour
     {
         if (_moneyRef)
             _moneyRef.text = $"$: {((int)value).ToString()}";
+
     }
 
 
     private void Update()
     {
+        if (!GameManager.isBossFight)
+            if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Moved)
+            {
+                Vector2 touchDeltaPosition = Input.GetTouch(0).deltaPosition;
+                Camera.main.transform.Translate(0, -touchDeltaPosition.y * _cameraSpeed * Time.deltaTime, 0);
+            }
+        if (Camera.main.transform.position.y >= _startingCameraPosition.y + _settings.LaneSpacing * _settings.LanesAmount)
+        {
+            Camera.main.transform.position = new Vector3(
+                Camera.main.transform.position.x,
+                _startingCameraPosition.y + _settings.LaneSpacing * _settings.LanesAmount,
+                Camera.main.transform.position.z);
+        }
+        if (Camera.main.transform.position.y <= _startingCameraPosition.y)
+        {
+            Camera.main.transform.position = new Vector3(
+                Camera.main.transform.position.x,
+                _startingCameraPosition.y,
+                Camera.main.transform.position.z);
+        }
+
         if (EventSystem.current.currentSelectedGameObject == null)
         {
             if (Input.GetMouseButtonDown(0))
