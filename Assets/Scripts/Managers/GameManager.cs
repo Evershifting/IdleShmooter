@@ -20,7 +20,7 @@ internal class GameManager : MonoBehaviour
     Bonuses _bonuses;
 
     private bool _isDoubleIncome;
-    private float _instantMoneySpawnCurrentTimer = 45;
+    private float _instantMoneySpawnCurrentTimer = 0;
 
     private void OnEnable()
     {
